@@ -37,7 +37,9 @@ const Teachers = () => {
       const response = await usersService.teachers.getAll();
       
       if (response.success) {
-        setTeachers(response.data || []);
+        console.log('👥 Teachers API response:', response.data);
+        const teachersData = Array.isArray(response.data) ? response.data : (response.data?.items || []);
+        setTeachers(teachersData);
       } else {
         setError('Failed to load teachers');
       }
@@ -229,7 +231,7 @@ const Teachers = () => {
       <div className="teachers-content">
         <Table 
           columns={columns}
-          data={teachers}
+          data={Array.isArray(teachers) ? teachers : []}
           loading={loading}
           emptyMessage="No teachers found. Add your first teacher to get started."
         />
@@ -253,6 +255,10 @@ const Teachers = () => {
               onChange={handleFormChange}
               placeholder="Enter teacher's full name"
               disabled={modalLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {formErrors.full_name && (
               <div className="form-error">{formErrors.full_name}</div>
@@ -268,7 +274,12 @@ const Teachers = () => {
               value={formData.email}
               onChange={handleFormChange}
               placeholder="teacher@example.com"
-              disabled={modalLoading}
+              disabled={modalLoading || modalMode === 'edit'}
+              readOnly={modalMode === 'edit'}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {formErrors.email && (
               <div className="form-error">{formErrors.email}</div>
@@ -287,6 +298,10 @@ const Teachers = () => {
               onChange={handleFormChange}
               placeholder={modalMode === 'create' ? 'Enter password' : 'Enter new password'}
               disabled={modalLoading}
+              autoComplete="new-password"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {formErrors.password && (
               <div className="form-error">{formErrors.password}</div>

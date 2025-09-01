@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { groupsService } from '../../services/groups';
 import { usersService } from '../../services/users';
 import { coursesService } from '../../services/courses';
@@ -29,11 +29,7 @@ const Groups = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  const loadInitialData = async () => {
+  const loadInitialData = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([
@@ -46,7 +42,11 @@ const Groups = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
 
   const loadGroups = async () => {
     try {

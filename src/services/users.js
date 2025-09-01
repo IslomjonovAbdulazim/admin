@@ -35,26 +35,42 @@ export const usersService = {
   teachers: {
     // Get all teachers
     getAll: async () => {
-      const response = await apiRequest.get(API_ENDPOINTS.TEACHERS);
-      return response.data;
+      try {
+        const response = await apiRequest.get(API_ENDPOINTS.TEACHERS);
+        return response.data;
+      } catch (error) {
+        return { success: false, detail: error.response?.data?.detail || 'Failed to fetch teachers' };
+      }
     },
 
     // Create new teacher
     create: async (teacherData) => {
-      const response = await apiRequest.post(API_ENDPOINTS.TEACHERS, teacherData);
-      return response.data;
+      try {
+        const response = await apiRequest.post(API_ENDPOINTS.TEACHERS, teacherData);
+        return response.data;
+      } catch (error) {
+        return { success: false, detail: error.response?.data?.detail || 'Failed to create teacher' };
+      }
     },
 
     // Update teacher
     update: async (profileId, teacherData) => {
-      const response = await apiRequest.put(`${API_ENDPOINTS.TEACHERS}/${profileId}`, teacherData);
-      return response.data;
+      try {
+        const response = await apiRequest.put(`${API_ENDPOINTS.TEACHERS}/${profileId}`, teacherData);
+        return response.data;
+      } catch (error) {
+        return { success: false, detail: error.response?.data?.detail || 'Failed to update teacher' };
+      }
     },
 
     // Delete teacher
     delete: async (profileId) => {
-      const response = await apiRequest.delete(`${API_ENDPOINTS.TEACHERS}/${profileId}`);
-      return response.data;
+      try {
+        const response = await apiRequest.delete(`${API_ENDPOINTS.TEACHERS}/${profileId}`);
+        return response.data;
+      } catch (error) {
+        return { success: false, detail: error.response?.data?.detail || 'Failed to delete teacher' };
+      }
     }
   }
 };

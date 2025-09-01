@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { analyticsService } from '../../services/analytics';
 import Modal from '../Modal/Modal';
 import './Header.css';
 
 const Header = ({ title, onMenuToggle }) => {
   const { user, logout, changePassword } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [centerInfo, setCenterInfo] = useState(null);
+
+  useEffect(() => {
+    loadCenterInfo();
+  }, []);
+
+  const loadCenterInfo = async () => {
+    try {
+      const response = await analyticsService.center.getInfo();
+      if (response.success) {
+        setCenterInfo(response.data);
+      }
+    } catch (error) {
+      console.log('Failed to load center info for header');
+    }
+  };
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -63,9 +80,18 @@ const Header = ({ title, onMenuToggle }) => {
               className="user-menu-toggle"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
-              <span className="user-initial">
-                {user?.full_name?.charAt(0)?.toUpperCase() || 'A'}
-              </span>
+              {centerInfo?.logo ? (
+                <img 
+                  src={centerInfo.logo.startsWith('http') ? centerInfo.logo : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '') || ''}${centerInfo.logo}`}
+                  alt="Center Logo" 
+                  className="user-logo"
+                  style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }}
+                />
+              ) : (
+                <span className="user-initial">
+                  {user?.full_name?.charAt(0)?.toUpperCase() || 'A'}
+                </span>
+              )}
               <span className="user-name">{user?.full_name || 'Admin'}</span>
               <span className="dropdown-arrow">▼</span>
             </button>

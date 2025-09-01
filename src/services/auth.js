@@ -4,11 +4,18 @@ import { API_ENDPOINTS } from '../utils/constants';
 export const authService = {
   // Login
   login: async (email, password) => {
-    const response = await apiRequest.post(API_ENDPOINTS.LOGIN, {
-      email,
-      password
-    });
-    return response.data;
+    console.log('🔐 Auth: Starting login for:', email);
+    try {
+      const response = await apiRequest.post(API_ENDPOINTS.LOGIN, {
+        email,
+        password
+      });
+      console.log('✅ Auth: Login API response:', response.status, response.data);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('❌ Auth: Login failed:', error.response?.status, error.response?.data);
+      return { success: false, detail: error.response?.data?.detail || 'Login failed' };
+    }
   },
 
   // Logout
@@ -20,7 +27,10 @@ export const authService = {
   // Get current user from localStorage
   getCurrentUser: () => {
     const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    console.log('👤 Auth: Getting current user from localStorage:', user);
+    const result = user && user !== 'undefined' ? JSON.parse(user) : null;
+    console.log('👤 Auth: Parsed user:', result);
+    return result;
   },
 
   // Check if user is authenticated
@@ -31,6 +41,7 @@ export const authService = {
 
   // Store auth data
   setAuthData: (token, user) => {
+    console.log('💾 Auth: Storing auth data - token:', !!token, 'user:', user);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
   },

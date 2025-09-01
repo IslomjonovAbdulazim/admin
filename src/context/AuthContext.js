@@ -27,18 +27,28 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    console.log('🔑 AuthContext: Login attempt for:', email);
     try {
       const response = await authService.login(email, password);
+      console.log('📦 AuthContext: Service response:', response);
       
       if (response.success) {
         const { access_token, user: userData } = response.data;
-        authService.setAuthData(access_token, userData);
-        setUser(userData);
+        console.log('✅ AuthContext: Login successful, storing auth data');
+        
+        // If no user data in response, create a basic user object
+        const userToStore = userData || { email: email, authenticated: true };
+        console.log('👤 AuthContext: User data to store:', userToStore);
+        
+        authService.setAuthData(access_token, userToStore);
+        setUser(userToStore);
         return { success: true };
       }
       
+      console.log('❌ AuthContext: Login failed -', response.detail);
       return { success: false, error: response.detail || 'Login failed' };
     } catch (error) {
+      console.error('⚠️ AuthContext: Login exception:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Login failed';
       return { success: false, error: errorMessage };
     }

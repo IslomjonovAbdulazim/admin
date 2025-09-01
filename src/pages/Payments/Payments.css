@@ -1,0 +1,434 @@
+.payments-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.page-header-left h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.page-header-left p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Card Styles */
+.subscription-card,
+.payments-card,
+.summary-card,
+.support-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.card-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: #666;
+  font-weight: 400;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-critical {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-expired {
+  background: #f5f5f5;
+  color: #6c757d;
+}
+
+/* Subscription Section */
+.subscription-section {
+  margin-bottom: 30px;
+}
+
+.subscription-details {
+  margin-top: 20px;
+}
+
+.subscription-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.subscription-item {
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.subscription-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subscription-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.subscription-value.critical {
+  color: #dc3545;
+}
+
+/* Subscription Warning */
+.subscription-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.warning-icon {
+  font-size: 20px;
+  margin-top: 2px;
+}
+
+.warning-content {
+  flex: 1;
+}
+
+.warning-title {
+  font-weight: 600;
+  color: #856404;
+  margin-bottom: 4px;
+}
+
+.warning-message {
+  font-size: 14px;
+  color: #856404;
+  line-height: 1.4;
+}
+
+/* Payment History */
+.payments-section {
+  margin-bottom: 30px;
+}
+
+.payments-content {
+  min-height: 400px;
+}
+
+.payment-amount {
+  font-weight: 600;
+  color: #28a745;
+  font-size: 14px;
+}
+
+.days-added {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.payment-description {
+  color: #555;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+/* Summary Section */
+.summary-section {
+  margin-bottom: 30px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.summary-icon {
+  font-size: 28px;
+  width: 50px;
+  text-align: center;
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Support Section */
+.support-section {
+  margin-bottom: 30px;
+}
+
+.support-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.support-icon {
+  font-size: 48px;
+  width: 80px;
+  text-align: center;
+}
+
+.support-text {
+  flex: 1;
+}
+
+.support-text h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.support-text p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Error handling */
+.alert {
+  margin-bottom: 20px;
+}
+
+.alert .btn {
+  margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .page-header-left h2 {
+    font-size: 20px;
+  }
+
+  .page-header .btn {
+    align-self: flex-start;
+  }
+
+  .subscription-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .subscription-item {
+    padding: 12px;
+  }
+
+  .subscription-value {
+    font-size: 14px;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .summary-item {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .summary-icon {
+    font-size: 24px;
+    width: 40px;
+  }
+
+  .summary-number {
+    font-size: 18px;
+  }
+
+  .support-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .support-icon {
+    width: auto;
+  }
+
+  .subscription-card,
+  .payments-card,
+  .summary-card,
+  .support-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .payment-description {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header-left h2 {
+    font-size: 18px;
+  }
+
+  .page-header-left p {
+    font-size: 13px;
+  }
+
+  .subscription-grid,
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .subscription-item,
+  .summary-item {
+    padding: 15px;
+  }
+
+  .subscription-card,
+  .payments-card,
+  .summary-card,
+  .support-card {
+    padding: 15px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .warning-message {
+    font-size: 13px;
+  }
+
+  .support-text h4 {
+    font-size: 16px;
+  }
+
+  .support-text p {
+    font-size: 13px;
+  }
+}
+
+/* Loading states */
+.payments-content .table-loading,
+.payments-content .table-empty {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animation for cards */
+.subscription-card,
+.payments-card,
+.summary-card,
+.support-card {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

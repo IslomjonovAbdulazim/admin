@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { analyticsService } from '../../services/analytics';
 import { ROUTES } from '../../utils/constants';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const [centerInfo, setCenterInfo] = useState(null);
+
+  useEffect(() => {
+    loadCenterInfo();
+  }, []);
+
+  const loadCenterInfo = async () => {
+    try {
+      const response = await analyticsService.center.getInfo();
+      if (response.success) {
+        setCenterInfo(response.data);
+      }
+    } catch (error) {
+      console.log('Failed to load center info for sidebar');
+    }
+  };
 
   const menuItems = [
     {
@@ -61,7 +78,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <h2>EduTi Admin</h2>
+            <h2>{centerInfo?.title || 'EduTi Admin'}</h2>
           </div>
           <button className="sidebar-close" onClick={onClose}>
             ✕

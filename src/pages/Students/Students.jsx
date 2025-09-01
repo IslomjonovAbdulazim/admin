@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { usersService } from '../../services/users';
 import Table from '../../components/Table/Table';
 import Modal from '../../components/Modal/Modal';
 import Pagination from '../../components/Pagination/Pagination';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import { formatDate, getErrorMessage, debounce, isValidUzbekPhone } from '../../utils/helpers';
+import { formatDate, getErrorMessage, isValidUzbekPhone } from '../../utils/helpers';
 import { PAGINATION } from '../../utils/constants';
 import './Students.css';
 
@@ -28,33 +28,11 @@ const Students = () => {
   // Form data
   const [formData, setFormData] = useState({
     full_name: '',
-    phone: '',
-    telegram_id: ''
+    phone: ''
   });
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    loadStudents();
-  }, [pagination.page, pagination.size]);
-
-  // Debounced search
-  const debouncedSearch = useCallback(
-    debounce((query) => {
-      setPagination(prev => ({ ...prev, page: 1 }));
-      loadStudents(1, pagination.size, query);
-    }, 500),
-    [pagination.size]
-  );
-
-  useEffect(() => {
-    if (searchQuery.trim()) {
-      debouncedSearch(searchQuery);
-    } else {
-      loadStudents(pagination.page, pagination.size, '');
-    }
-  }, [searchQuery, debouncedSearch]);
-
-  const loadStudents = async (page = pagination.page, size = pagination.size, search = searchQuery) => {
+  const loadStudents = useCallback(async (page = pagination.page, size = pagination.size, search = searchQuery) => {
     try {
       setLoading(true);
       setError('');
@@ -76,7 +54,32 @@ const Students = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.size, searchQuery]);
+
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
+
+  // Debounced search
+  const debounceRef = useRef();
+  
+  const debouncedSearchFunction = useCallback((query) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = setTimeout(() => {
+      setPagination(prev => ({ ...prev, page: 1 }));
+      loadStudents(1, pagination.size, query);
+    }, 500);
+  }, [loadStudents, pagination.size]);
+
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      debouncedSearchFunction(searchQuery);
+    } else {
+      loadStudents(pagination.page, pagination.size, '');
+    }
+  }, [searchQuery, debouncedSearchFunction, loadStudents, pagination.page, pagination.size]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -88,7 +91,7 @@ const Students = () => {
 
   const openCreateModal = () => {
     setModalMode('create');
-    setFormData({ full_name: '', phone: '', telegram_id: '' });
+    setFormData({ full_name: '', phone: '' });
     setFormErrors({});
     setSelectedStudent(null);
     setShowModal(true);
@@ -98,8 +101,7 @@ const Students = () => {
     setModalMode('edit');
     setFormData({
       full_name: student.full_name || '',
-      phone: student.phone || '',
-      telegram_id: student.telegram_id || ''
+      phone: student.phone || ''
     });
     setFormErrors({});
     setSelectedStudent(student);
@@ -108,7 +110,7 @@ const Students = () => {
 
   const closeModal = () => {
     setShowModal(false);
-    setFormData({ full_name: '', phone: '', telegram_id: '' });
+    setFormData({ full_name: '', phone: '' });
     setFormErrors({});
     setSelectedStudent(null);
   };
@@ -197,11 +199,6 @@ const Students = () => {
       render: (value) => value || 'N/A'
     },
     {
-      key: 'telegram_id',
-      title: 'Telegram',
-      render: (value) => value || 'N/A'
-    },
-    {
       key: 'is_active',
       title: 'Status',
       render: (value) => (
@@ -238,9 +235,6 @@ const Students = () => {
     }
   ];
 
-  if (loading && students.length === 0) {
-    return <LoadingSpinner message="Loading students..." />;
-  }
 
   return (
     <div className="students-page">
@@ -309,6 +303,10 @@ const Students = () => {
               onChange={handleFormChange}
               placeholder="Enter student's full name"
               disabled={modalLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {formErrors.full_name && (
               <div className="form-error">{formErrors.full_name}</div>
@@ -325,23 +323,14 @@ const Students = () => {
               onChange={handleFormChange}
               placeholder="+998901234567"
               disabled={modalLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {formErrors.phone && (
               <div className="form-error">{formErrors.phone}</div>
             )}
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Telegram ID</label>
-            <input
-              type="text"
-              name="telegram_id"
-              className="form-control"
-              value={formData.telegram_id}
-              onChange={handleFormChange}
-              placeholder="@username"
-              disabled={modalLoading}
-            />
           </div>
 
           <div className="modal-actions">
