@@ -41,7 +41,7 @@ const Teachers = () => {
         const teachersData = Array.isArray(response.data) ? response.data : (response.data?.items || []);
         setTeachers(teachersData);
       } else {
-        setError('Failed to load teachers');
+        setError('Oʻqituvchilarni yuklashda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -81,21 +81,21 @@ const Teachers = () => {
     const errors = {};
     
     if (!formData.full_name.trim()) {
-      errors.full_name = 'Full name is required';
+      errors.full_name = 'Toʻliq ism kiritish majburiy';
     }
     
     if (!formData.email.trim()) {
-      errors.email = 'Email is required';
+      errors.email = 'Email kiritish majburiy';
     } else if (!isValidEmail(formData.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = 'Toʻgʻri email manzilini kiriting';
     }
     
     if (modalMode === 'create' && !formData.password.trim()) {
-      errors.password = 'Password is required';
+      errors.password = 'Parol kiritish majburiy';
     }
     
     if (formData.password && formData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
+      errors.password = 'Parol kamida 6 ta belgidan iborat boʻlishi kerak';
     }
     
     setFormErrors(errors);
@@ -128,7 +128,7 @@ const Teachers = () => {
         closeModal();
         loadTeachers(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} teacher`);
+        setError(response.detail || `Oʻqituvchini ${modalMode === 'create' ? 'qoʻshishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -138,7 +138,7 @@ const Teachers = () => {
   };
 
   const handleDelete = async (teacher) => {
-    if (!window.confirm(`Are you sure you want to delete ${teacher.full_name}?`)) {
+    if (!window.confirm(`${teacher.full_name}ni oʻchirishni xohlaysizmi?`)) {
       return;
     }
 
@@ -147,7 +147,7 @@ const Teachers = () => {
       if (response.success) {
         loadTeachers(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete teacher');
+        setError(response.detail || 'Oʻqituvchini oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -167,22 +167,22 @@ const Teachers = () => {
   const columns = [
     {
       key: 'full_name',
-      title: 'Name',
-      render: (value) => value || 'N/A'
+      title: 'Ism',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'email',
       title: 'Email',
-      render: (value) => value || 'N/A'
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '120px',
       render: (_, teacher) => (
         <div className="table-actions">
@@ -190,22 +190,19 @@ const Teachers = () => {
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(teacher)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(teacher)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading teachers..." />;
-  }
 
   return (
     <div className="teachers-page">
@@ -213,18 +210,18 @@ const Teachers = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadTeachers()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
 
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Teachers</h2>
-          <p>Manage all teachers in your learning center</p>
+          <h2>Oʻqituvchilar</h2>
+          <p>Oʻquv markazingizdagi barcha oʻqituvchilarni boshqaring</p>
         </div>
         <button className="btn btn-primary" onClick={openCreateModal}>
-          Add Teacher
+          Oʻqituvchi qoʻshish
         </button>
       </div>
 
@@ -233,7 +230,7 @@ const Teachers = () => {
           columns={columns}
           data={Array.isArray(teachers) ? teachers : []}
           loading={loading}
-          emptyMessage="No teachers found. Add your first teacher to get started."
+          emptyMessage="Oʻqituvchilar topilmadi. Birinchi oʻqituvchingizni qoʻshing."
         />
       </div>
 
@@ -241,19 +238,19 @@ const Teachers = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Teacher' : 'Edit Teacher'}
+        title={modalMode === 'create' ? 'Yangi oʻqituvchi qoʻshish' : 'Oʻqituvchini tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Full Name *</label>
+            <label className="form-label">Toʻliq ism *</label>
             <input
               type="text"
               name="full_name"
               className={`form-control ${formErrors.full_name ? 'error' : ''}`}
               value={formData.full_name}
               onChange={handleFormChange}
-              placeholder="Enter teacher's full name"
+              placeholder="Oʻqituvchining toʻliq ismini kiriting"
               disabled={modalLoading}
               autoComplete="off"
               autoCorrect="off"
@@ -266,14 +263,14 @@ const Teachers = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Email Address *</label>
+            <label className="form-label">Email manzil *</label>
             <input
               type="email"
               name="email"
               className={`form-control ${formErrors.email ? 'error' : ''}`}
               value={formData.email}
               onChange={handleFormChange}
-              placeholder="teacher@example.com"
+              placeholder="oqituvchi@example.com"
               disabled={modalLoading || modalMode === 'edit'}
               readOnly={modalMode === 'edit'}
               autoComplete="off"
@@ -288,7 +285,7 @@ const Teachers = () => {
 
           <div className="form-group">
             <label className="form-label">
-              Password {modalMode === 'create' ? '*' : '(leave blank to keep current)'}
+              Parol {modalMode === 'create' ? '*' : '(hozirgi parolni saqlash uchun boʻsh qoldiring)'}
             </label>
             <input
               type="password"
@@ -296,7 +293,7 @@ const Teachers = () => {
               className={`form-control ${formErrors.password ? 'error' : ''}`}
               value={formData.password}
               onChange={handleFormChange}
-              placeholder={modalMode === 'create' ? 'Enter password' : 'Enter new password'}
+              placeholder={modalMode === 'create' ? 'Parolni kiriting' : 'Yangi parolni kiriting'}
               disabled={modalLoading}
               autoComplete="new-password"
               autoCorrect="off"
@@ -315,14 +312,14 @@ const Teachers = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Teacher' : 'Update Teacher'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Oʻqituvchi qoʻshish' : 'Oʻqituvchini yangilash'}
             </button>
           </div>
         </form>

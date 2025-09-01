@@ -23,7 +23,7 @@ const Analytics = () => {
       if (response.success) {
         setAnalyticsData(response.data);
       } else {
-        setError('Failed to load analytics data');
+        setError('Tahlil maʻlumotlarini yuklashda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -32,9 +32,6 @@ const Analytics = () => {
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner message="Loading analytics..." />;
-  }
 
   if (error) {
     return (
@@ -42,7 +39,7 @@ const Analytics = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-primary mt-10" onClick={loadAnalyticsData}>
-            Try Again
+            Qayta urinish
           </button>
         </div>
       </div>
@@ -60,11 +57,11 @@ const Analytics = () => {
     <div className="analytics-page">
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Analytics & Reports</h2>
-          <p>View detailed learning analytics and student performance metrics</p>
+          <h2>Tahlillar va hisobotlar</h2>
+          <p>Batafsil oʻquv tahlillari va talabalar samaradorligi koʻrsatkichlarini koʻring</p>
         </div>
         <button className="btn btn-secondary" onClick={loadAnalyticsData}>
-          Refresh Data
+          Maʻlumotlarni yangilash
         </button>
       </div>
 
@@ -72,27 +69,27 @@ const Analytics = () => {
       <div className="analytics-overview">
         <div className="analytics-card">
           <div className="card-header">
-            <h3>Learning Progress</h3>
+            <h3>Oʻquv jarayoni</h3>
           </div>
           <div className="progress-stats">
             <div className="progress-item">
               <div className="progress-number">{total_lessons}</div>
-              <div className="progress-label">Total Lessons</div>
+              <div className="progress-label">Jami darslar</div>
             </div>
             <div className="progress-item">
               <div className="progress-number">{completed_lessons}</div>
-              <div className="progress-label">Completed</div>
+              <div className="progress-label">Tugallangan</div>
             </div>
             <div className="progress-item">
               <div className="progress-number">{completion_rate.toFixed(1)}%</div>
-              <div className="progress-label">Completion Rate</div>
+              <div className="progress-label">Tugallanish foizi</div>
             </div>
           </div>
           
           {/* Progress Bar */}
           <div className="progress-bar-container">
             <div className="progress-bar-label">
-              Overall Progress: {completed_lessons} of {total_lessons} lessons completed
+              Umumiy jarayon: {total_lessons} darsdan {completed_lessons} tasi tugallangan
             </div>
             <div className="progress-bar">
               <div 
@@ -108,8 +105,8 @@ const Analytics = () => {
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="card-header">
-            <h3>Top Performing Students</h3>
-            <span className="card-subtitle">Students with highest coin scores</span>
+            <h3>Eng yaxshi talabalar</h3>
+            <span className="card-subtitle">Eng koʻp coin toʻplagan talabalar</span>
           </div>
           
           {top_students && top_students.length > 0 ? (
@@ -130,7 +127,7 @@ const Analytics = () => {
                     <div className="student-name">{student.full_name}</div>
                     <div className="student-coins">
                       <span className="coins-icon">🪙</span>
-                      {student.total_coins} coins
+                      {student.total_coins} coin
                     </div>
                   </div>
                   <div className="student-medal">
@@ -143,7 +140,7 @@ const Analytics = () => {
             </div>
           ) : (
             <div className="empty-state">
-              <p>No student performance data available yet</p>
+              <p>Hozircha talabalar samaradorligi haqida maʻlumot yoʻq</p>
             </div>
           )}
         </div>
@@ -153,28 +150,28 @@ const Analytics = () => {
       <div className="analytics-grid">
         <div className="analytics-card">
           <div className="card-header">
-            <h3>Learning Activity</h3>
+            <h3>Oʻquv faolligi</h3>
           </div>
           <div className="activity-stats">
             <div className="activity-item">
               <div className="activity-icon">📚</div>
               <div className="activity-content">
                 <div className="activity-number">{total_lessons}</div>
-                <div className="activity-label">Total Lessons Available</div>
+                <div className="activity-label">Mavjud darslar soni</div>
               </div>
             </div>
             <div className="activity-item">
               <div className="activity-icon">✅</div>
               <div className="activity-content">
                 <div className="activity-number">{completed_lessons}</div>
-                <div className="activity-label">Lessons Completed</div>
+                <div className="activity-label">Tugallangan darslar</div>
               </div>
             </div>
             <div className="activity-item">
               <div className="activity-icon">📈</div>
               <div className="activity-content">
                 <div className="activity-number">{completion_rate.toFixed(1)}%</div>
-                <div className="activity-label">Success Rate</div>
+                <div className="activity-label">Muvaffaqiyat darajasi</div>
               </div>
             </div>
           </div>
@@ -182,24 +179,24 @@ const Analytics = () => {
 
         <div className="analytics-card">
           <div className="card-header">
-            <h3>Engagement Overview</h3>
+            <h3>Faollik koʻrsatkichlari</h3>
           </div>
           <div className="engagement-content">
             <div className="engagement-item">
-              <div className="engagement-label">Active Students</div>
+              <div className="engagement-label">Faol talabalar</div>
               <div className="engagement-value">{top_students.length}</div>
             </div>
             <div className="engagement-item">
-              <div className="engagement-label">Average Performance</div>
+              <div className="engagement-label">Oʻrtacha natija</div>
               <div className="engagement-value">
                 {top_students.length > 0 
                   ? Math.round(top_students.reduce((sum, s) => sum + s.total_coins, 0) / top_students.length)
                   : 0
-                } coins
+                } coin
               </div>
             </div>
             <div className="engagement-item">
-              <div className="engagement-label">Last Updated</div>
+              <div className="engagement-label">Oxirgi yangilash</div>
               <div className="engagement-value">{formatDate(new Date())}</div>
             </div>
           </div>
@@ -210,31 +207,31 @@ const Analytics = () => {
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="card-header">
-            <h3>Quick Actions</h3>
+            <h3>Tezkor amallar</h3>
           </div>
           <div className="quick-actions-grid">
             <div className="action-item">
               <button className="action-btn" onClick={loadAnalyticsData}>
                 <span className="action-icon">🔄</span>
-                <span className="action-text">Refresh Analytics</span>
+                <span className="action-text">Tahlillarni yangilash</span>
               </button>
             </div>
             <div className="action-item">
               <button className="action-btn" onClick={() => window.print()}>
                 <span className="action-icon">🖨️</span>
-                <span className="action-text">Print Report</span>
+                <span className="action-text">Hisobotni chop etish</span>
               </button>
             </div>
             <div className="action-item">
-              <button className="action-btn disabled" title="Coming Soon">
+              <button className="action-btn disabled" title="Tez orada">
                 <span className="action-icon">📊</span>
-                <span className="action-text">Export Data</span>
+                <span className="action-text">Maʻlumotlarni eksport qilish</span>
               </button>
             </div>
             <div className="action-item">
-              <button className="action-btn disabled" title="Coming Soon">
+              <button className="action-btn disabled" title="Tez orada">
                 <span className="action-icon">📈</span>
-                <span className="action-text">Advanced Reports</span>
+                <span className="action-text">Kengaytirilgan hisobotlar</span>
               </button>
             </div>
           </div>

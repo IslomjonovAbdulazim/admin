@@ -38,7 +38,7 @@ const Groups = () => {
         loadCourses()
       ]);
     } catch (error) {
-      setError('Failed to load data');
+      setError('Maʻlumotlarni yuklashda xatolik yuz berdi');
     } finally {
       setLoading(false);
     }
@@ -112,15 +112,15 @@ const Groups = () => {
     const errors = {};
     
     if (!formData.name.trim()) {
-      errors.name = 'Group name is required';
+      errors.name = 'Guruh nomi kiritish majburiy';
     }
     
     if (!formData.teacher_id) {
-      errors.teacher_id = 'Please select a teacher';
+      errors.teacher_id = 'Oʻqituvchini tanlang';
     }
     
     if (!formData.course_id) {
-      errors.course_id = 'Please select a course';
+      errors.course_id = 'Kursni tanlang';
     }
     
     setFormErrors(errors);
@@ -152,7 +152,7 @@ const Groups = () => {
         closeModal();
         loadGroups(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} group`);
+        setError(response.detail || `Guruhni ${modalMode === 'create' ? 'yaratishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -162,7 +162,7 @@ const Groups = () => {
   };
 
   const handleDelete = async (group) => {
-    if (!window.confirm(`Are you sure you want to delete "${group.name}"?`)) {
+    if (!window.confirm(`"${group.name}" guruhini oʻchirishni xohlaysizmi?`)) {
       return;
     }
 
@@ -171,7 +171,7 @@ const Groups = () => {
       if (response.success) {
         loadGroups(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete group');
+        setError(response.detail || 'Guruhni oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -190,38 +190,38 @@ const Groups = () => {
 
   const getTeacherName = (teacherId) => {
     const teacher = teachers.find(t => t.id === teacherId);
-    return teacher ? teacher.full_name : 'Unknown';
+    return teacher ? teacher.full_name : 'Nomaʻlum';
   };
 
   const getCourseName = (courseId) => {
     const course = courses.find(c => c.id === courseId);
-    return course ? course.title : 'Unknown';
+    return course ? course.title : 'Nomaʻlum';
   };
 
   const columns = [
     {
       key: 'name',
-      title: 'Group Name',
-      render: (value) => value || 'N/A'
+      title: 'Guruh nomi',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'teacher_id',
-      title: 'Teacher',
+      title: 'Oʻqituvchi',
       render: (teacherId) => getTeacherName(teacherId)
     },
     {
       key: 'course_id',
-      title: 'Course',
+      title: 'Kurs',
       render: (courseId) => getCourseName(courseId)
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '120px',
       render: (_, group) => (
         <div className="table-actions">
@@ -229,22 +229,19 @@ const Groups = () => {
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(group)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(group)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading groups..." />;
-  }
 
   return (
     <div className="groups-page">
@@ -252,18 +249,18 @@ const Groups = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadInitialData()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
 
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Groups</h2>
-          <p>Manage learning groups and assign teachers and courses</p>
+          <h2>Guruhlar</h2>
+          <p>Oʻquv guruhlarini boshqaring va oʻqituvchilar hamda kurslarni tayinlang</p>
         </div>
         <button className="btn btn-primary" onClick={openCreateModal}>
-          Create Group
+          Guruh yaratish
         </button>
       </div>
 
@@ -272,7 +269,7 @@ const Groups = () => {
           columns={columns}
           data={groups}
           loading={loading}
-          emptyMessage="No groups found. Create your first group to get started."
+          emptyMessage="Guruhlar topilmadi. Birinchi guruhingizni yarating."
         />
       </div>
 
@@ -280,19 +277,19 @@ const Groups = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Create New Group' : 'Edit Group'}
+        title={modalMode === 'create' ? 'Yangi guruh yaratish' : 'Guruhni tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Group Name *</label>
+            <label className="form-label">Guruh nomi *</label>
             <input
               type="text"
               name="name"
               className={`form-control ${formErrors.name ? 'error' : ''}`}
               value={formData.name}
               onChange={handleFormChange}
-              placeholder="Enter group name"
+              placeholder="Guruh nomini kiriting"
               disabled={modalLoading}
             />
             {formErrors.name && (
@@ -301,7 +298,7 @@ const Groups = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Teacher *</label>
+            <label className="form-label">Oʻqituvchi *</label>
             <select
               name="teacher_id"
               className={`form-control ${formErrors.teacher_id ? 'error' : ''}`}
@@ -309,7 +306,7 @@ const Groups = () => {
               onChange={handleFormChange}
               disabled={modalLoading}
             >
-              <option value="">Select a teacher</option>
+              <option value="">Oʻqituvchini tanlang</option>
               {teachers.map(teacher => (
                 <option key={teacher.id} value={teacher.id}>
                   {teacher.full_name}
@@ -322,7 +319,7 @@ const Groups = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Course *</label>
+            <label className="form-label">Kurs *</label>
             <select
               name="course_id"
               className={`form-control ${formErrors.course_id ? 'error' : ''}`}
@@ -330,7 +327,7 @@ const Groups = () => {
               onChange={handleFormChange}
               disabled={modalLoading}
             >
-              <option value="">Select a course</option>
+              <option value="">Kursni tanlang</option>
               {courses.map(course => (
                 <option key={course.id} value={course.id}>
                   {course.title}
@@ -349,14 +346,14 @@ const Groups = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Create Group' : 'Update Group'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Guruh yaratish' : 'Guruhni yangilash'}
             </button>
           </div>
         </form>

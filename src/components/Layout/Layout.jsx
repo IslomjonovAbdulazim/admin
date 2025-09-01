@@ -12,22 +12,22 @@ const Layout = ({ children }) => {
   const getPageTitle = () => {
     const path = location.pathname;
     const titleMap = {
-      '/': 'Dashboard',
-      '/students': 'Students',
-      '/teachers': 'Teachers',
-      '/groups': 'Groups',
-      '/courses': 'Courses',
-      '/analytics': 'Analytics',
-      '/payments': 'Payments',
-      '/center': 'Center Settings'
+      '/': 'Boshqaruv paneli',
+      '/students': 'Talabalar',
+      '/teachers': 'Oʻqituvchilar',
+      '/groups': 'Guruhlar',
+      '/courses': 'Kurslar',
+      '/analytics': 'Tahlillar',
+      '/payments': 'Toʻlovlar',
+      '/center': 'Markaz sozlamalari'
     };
     
     // Handle dynamic routes
-    if (path.includes('/modules')) return 'Modules';
-    if (path.includes('/lessons')) return 'Lessons';
-    if (path.includes('/words')) return 'Words';
+    if (path.includes('/modules')) return 'Modullar';
+    if (path.includes('/lessons')) return 'Darslar';
+    if (path.includes('/words')) return 'Soʻzlar';
     
-    return titleMap[path] || 'Admin Panel';
+    return titleMap[path] || 'Admin paneli';
   };
 
   // Close sidebar on route change (mobile)

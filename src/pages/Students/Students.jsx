@@ -47,7 +47,7 @@ const Students = () => {
           total: response.data.total || 0
         }));
       } else {
-        setError('Failed to load students');
+        setError('Talabalarni yuklashda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -190,31 +190,31 @@ const Students = () => {
   const columns = [
     {
       key: 'full_name',
-      title: 'Name',
-      render: (value) => value || 'N/A'
+      title: 'Ism',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'phone',
-      title: 'Phone',
-      render: (value) => value || 'N/A'
+      title: 'Telefon',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'is_active',
-      title: 'Status',
+      title: 'Holat',
       render: (value) => (
         <span className={`status ${value ? 'status-active' : 'status-inactive'}`}>
-          {value ? 'Active' : 'Inactive'}
+          {value ? 'Faol' : 'Faol emas'}
         </span>
       )
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '120px',
       render: (_, student) => (
         <div className="table-actions">
@@ -222,13 +222,13 @@ const Students = () => {
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(student)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(student)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
@@ -242,18 +242,18 @@ const Students = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadStudents()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
 
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Students</h2>
-          <p>Manage all students in your learning center</p>
+          <h2>Talabalar</h2>
+          <p>Oʻquv markazingizdagi barcha talabalarni boshqaring</p>
         </div>
         <button className="btn btn-primary" onClick={openCreateModal}>
-          Add Student
+          Talaba qoʻshish
         </button>
       </div>
 
@@ -262,7 +262,7 @@ const Students = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search students by name..."
+            placeholder="Talabalarni ism boʻyicha qidiring..."
             value={searchQuery}
             onChange={handleSearch}
           />
@@ -272,7 +272,7 @@ const Students = () => {
           columns={columns}
           data={students}
           loading={loading}
-          emptyMessage="No students found"
+          emptyMessage="Talabalar topilmadi"
         />
 
         {pagination.total > pagination.size && (
@@ -289,19 +289,19 @@ const Students = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Student' : 'Edit Student'}
+        title={modalMode === 'create' ? 'Yangi talaba qoʻshish' : 'Talabani tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Full Name *</label>
+            <label className="form-label">Toʻliq ism *</label>
             <input
               type="text"
               name="full_name"
               className={`form-control ${formErrors.full_name ? 'error' : ''}`}
               value={formData.full_name}
               onChange={handleFormChange}
-              placeholder="Enter student's full name"
+              placeholder="Talabaning toʻliq ismini kiriting"
               disabled={modalLoading}
               autoComplete="off"
               autoCorrect="off"
@@ -314,7 +314,7 @@ const Students = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Phone Number *</label>
+            <label className="form-label">Telefon raqami *</label>
             <input
               type="tel"
               name="phone"
@@ -340,14 +340,14 @@ const Students = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Student' : 'Update Student'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Talaba qoʻshish' : 'Talabani yangilash'}
             </button>
           </div>
         </form>

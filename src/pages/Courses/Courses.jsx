@@ -39,7 +39,7 @@ const Courses = () => {
       if (response.success) {
         setCourses(response.data || []);
       } else {
-        setError('Failed to load courses');
+        setError('Kurslarni yuklashda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -78,11 +78,11 @@ const Courses = () => {
     const errors = {};
     
     if (!formData.title.trim()) {
-      errors.title = 'Course title is required';
+      errors.title = 'Kurs nomi kiritish majburiy';
     }
     
     if (!formData.description.trim()) {
-      errors.description = 'Course description is required';
+      errors.description = 'Kurs tavsifi kiritish majburiy';
     }
     
     setFormErrors(errors);
@@ -109,7 +109,7 @@ const Courses = () => {
         closeModal();
         loadCourses(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} course`);
+        setError(response.detail || `Kursni ${modalMode === 'create' ? 'qoʻshishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -119,7 +119,7 @@ const Courses = () => {
   };
 
   const handleDelete = async (course) => {
-    if (!window.confirm(`Are you sure you want to delete "${course.title}"? This will also delete all associated modules and lessons.`)) {
+    if (!window.confirm(`"${course.title}" kursini oʻchirishni xohlaysizmi? Bu barcha bogʻlangan modullar va darslarni ham oʻchiradi.`)) {
       return;
     }
 
@@ -128,7 +128,7 @@ const Courses = () => {
       if (response.success) {
         loadCourses(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete course');
+        setError(response.detail || 'Kursni oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -148,26 +148,26 @@ const Courses = () => {
   const columns = [
     {
       key: 'title',
-      title: 'Course Title',
-      render: (value) => value || 'N/A'
+      title: 'Kurs nomi',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'description',
-      title: 'Description',
+      title: 'Tavsif',
       render: (value) => (
         <div className="course-description">
-          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'N/A'}
+          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'Maʻlumot yoʻq'}
         </div>
       )
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '200px',
       render: (_, course) => (
         <div className="table-actions">
@@ -175,28 +175,25 @@ const Courses = () => {
             to={`/courses/${course.id}/modules`}
             className="btn btn-sm btn-primary"
           >
-            Modules
+            Modullar
           </Link>
           <button 
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(course)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(course)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading courses..." />;
-  }
 
   return (
     <div className="courses-page">
@@ -204,18 +201,18 @@ const Courses = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadCourses()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
 
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Courses</h2>
-          <p>Manage your learning courses and their content structure</p>
+          <h2>Kurslar</h2>
+          <p>Oʻquv kurslaringiz va ularning tarkibiy tuzilishini boshqaring</p>
         </div>
         <button className="btn btn-primary" onClick={openCreateModal}>
-          Add Course
+          Kurs qoʻshish
         </button>
       </div>
 
@@ -224,7 +221,7 @@ const Courses = () => {
           columns={columns}
           data={courses}
           loading={loading}
-          emptyMessage="No courses found. Create your first course to get started."
+          emptyMessage="Kurslar topilmadi. Birinchi kursingizni yarating."
         />
       </div>
 
@@ -232,19 +229,19 @@ const Courses = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Course' : 'Edit Course'}
+        title={modalMode === 'create' ? 'Yangi kurs qoʻshish' : 'Kursni tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Course Title *</label>
+            <label className="form-label">Kurs nomi *</label>
             <input
               type="text"
               name="title"
               className={`form-control ${formErrors.title ? 'error' : ''}`}
               value={formData.title}
               onChange={handleFormChange}
-              placeholder="Enter course title"
+              placeholder="Kurs nomini kiriting"
               disabled={modalLoading}
             />
             {formErrors.title && (
@@ -253,13 +250,13 @@ const Courses = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Description *</label>
+            <label className="form-label">Tavsif *</label>
             <textarea
               name="description"
               className={`form-control ${formErrors.description ? 'error' : ''}`}
               value={formData.description}
               onChange={handleFormChange}
-              placeholder="Enter course description"
+              placeholder="Kurs tavsifini kiriting"
               rows="4"
               disabled={modalLoading}
             />
@@ -275,14 +272,14 @@ const Courses = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Course' : 'Update Course'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Kurs qoʻshish' : 'Kursni yangilash'}
             </button>
           </div>
         </form>

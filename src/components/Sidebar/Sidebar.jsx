@@ -26,42 +26,42 @@ const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
     {
       path: ROUTES.DASHBOARD,
-      label: 'Dashboard',
+      label: 'Boshqaruv paneli',
       icon: '📊'
     },
     {
       path: ROUTES.STUDENTS,
-      label: 'Students',
+      label: 'Talabalar',
       icon: '👥'
     },
     {
       path: ROUTES.TEACHERS,
-      label: 'Teachers',
+      label: 'Oʻqituvchilar',
       icon: '👨‍🏫'
     },
     {
       path: ROUTES.GROUPS,
-      label: 'Groups',
+      label: 'Guruhlar',
       icon: '👥'
     },
     {
       path: ROUTES.COURSES,
-      label: 'Courses',
+      label: 'Kurslar',
       icon: '📚'
     },
     {
       path: ROUTES.ANALYTICS,
-      label: 'Analytics',
+      label: 'Tahlillar',
       icon: '📈'
     },
     {
       path: ROUTES.PAYMENTS,
-      label: 'Payments',
+      label: 'Toʻlovlar',
       icon: '💳'
     },
     {
       path: ROUTES.CENTER,
-      label: 'Center Settings',
+      label: 'Markaz sozlamalari',
       icon: '⚙️'
     }
   ];
@@ -78,7 +78,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <h2>{centerInfo?.title || 'EduTi Admin'}</h2>
+            <h2>{centerInfo?.title || 'EduTi Admin paneli'}</h2>
           </div>
           <button className="sidebar-close" onClick={onClose}>
             ✕

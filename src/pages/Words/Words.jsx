@@ -49,7 +49,7 @@ const Words = () => {
       if (wordsResponse.success) {
         setWords(wordsResponse.data || []);
       } else {
-        setError('Failed to load words');
+        setError('Soʻzlarni yuklashda xatolik yuz berdi');
       }
       
       
@@ -113,15 +113,15 @@ const Words = () => {
     const errors = {};
     
     if (!formData.word.trim()) {
-      errors.word = 'Word is required';
+      errors.word = 'Soʻz kiritish majburiy';
     }
     
     if (!formData.meaning.trim()) {
-      errors.meaning = 'Meaning is required';
+      errors.meaning = 'Maʻno kiritish majburiy';
     }
     
     if (!formData.order_index || formData.order_index < 1) {
-      errors.order_index = 'Order index must be a positive number';
+      errors.order_index = 'Tartib raqami musbat son boʻlishi kerak';
     }
     
     setFormErrors(errors);
@@ -164,7 +164,7 @@ const Words = () => {
         closeModal();
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} word`);
+        setError(response.detail || `Soʻzni ${modalMode === 'create' ? 'qoʻshishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -193,7 +193,7 @@ const Words = () => {
     const audio = new Audio(fullAudioUrl);
     audio.play().catch(error => {
       console.error('Failed to play audio:', error);
-      alert('Failed to play audio');
+      alert('Audio ijro etishda xatolik yuz berdi');
     });
   };
 
@@ -214,7 +214,7 @@ const Words = () => {
   };
 
   const handleDelete = async (word) => {
-    if (!window.confirm(`Are you sure you want to delete the word "${word.word}"?`)) {
+    if (!window.confirm(`"${word.word}" soʻzini oʻchirishni xohlaysizmi?`)) {
       return;
     }
 
@@ -223,7 +223,7 @@ const Words = () => {
       if (response.success) {
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete word');
+        setError(response.detail || 'Soʻzni oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -246,22 +246,22 @@ const Words = () => {
 
     if (type === 'image') {
       if (!isValidImage(file)) {
-        setError('Please select a valid image file (PNG, JPG, JPEG)');
+        setError('Iltimos, toʻgʻri rasm faylini tanlang (PNG, JPG, JPEG)');
         return;
       }
       if (file.size > 1 * 1024 * 1024) { // 1MB limit
-        setError('Image file size must be less than 1MB');
+        setError('Rasm fayl hajmi 1MB dan kam boʻlishi kerak');
         return;
       }
       setImageFile(file);
     } else if (type === 'audio') {
       if (!isValidAudio(file)) {
-        setError('Please select a valid audio file (MP3, WAV)');
+        setError('Iltimos, toʻgʻri audio faylini tanlang (MP3, WAV)');
         return;
       }
       
       if (file.size > 1 * 1024 * 1024) { // 1MB limit
-        setError('Audio file size must be less than 1MB');
+        setError('Audio fayl hajmi 1MB dan kam boʻlishi kerak');
         return;
       }
       
@@ -271,7 +271,7 @@ const Words = () => {
       
       audio.addEventListener('loadedmetadata', () => {
         if (audio.duration > 7) {
-          setError('Audio duration must be 7 seconds or less');
+          setError('Audio davomiyligi 7 soniya yoki undan kam boʻlishi kerak');
           URL.revokeObjectURL(audio.src);
           return;
         }
@@ -280,7 +280,7 @@ const Words = () => {
       });
       
       audio.addEventListener('error', () => {
-        setError('Failed to load audio file');
+        setError('Audio faylni yuklashda xatolik yuz berdi');
         URL.revokeObjectURL(audio.src);
       });
     }
@@ -289,30 +289,30 @@ const Words = () => {
   const columns = [
     {
       key: 'order_index',
-      title: 'Order',
+      title: 'Tartib',
       width: '80px',
       render: (value) => (
-        <span className="order-badge">{value || 'N/A'}</span>
+        <span className="order-badge">{value || 'Maʻlumot yoʻq'}</span>
       )
     },
     {
       key: 'word',
-      title: 'Word',
+      title: 'Soʻz',
       render: (value) => (
-        <span className="word-text">{value || 'N/A'}</span>
+        <span className="word-text">{value || 'Maʻlumot yoʻq'}</span>
       )
     },
     {
       key: 'meaning',
-      title: 'Meaning',
-      render: (value) => value || 'N/A'
+      title: 'Maʻno',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'definition',
-      title: 'Definition',
+      title: 'Taʻrif',
       render: (value) => (
         <div className="word-definition">
-          {value ? (value.length > 80 ? `${value.substring(0, 80)}...` : value) : 'N/A'}
+          {value ? (value.length > 80 ? `${value.substring(0, 80)}...` : value) : 'Maʻlumot yoʻq'}
         </div>
       )
     },
@@ -326,7 +326,7 @@ const Words = () => {
             <button 
               className="btn btn-sm btn-info mr-5" 
               onClick={() => openImagePreview(word.image_url)}
-              title="View image"
+              title="Rasmni koʻrish"
               style={{ fontSize: '16px', padding: '8px 12px' }}
             >
               🖼️
@@ -336,20 +336,20 @@ const Words = () => {
             <button 
               className="btn btn-sm btn-success" 
               onClick={() => playAudio(word.audio_url)}
-              title="Play audio"
+              title="Audio ijro etish"
               style={{ fontSize: '16px', padding: '8px 12px' }}
             >
               ▶️
             </button>
           ) : (
-            <span className="no-audio" title="No audio" style={{ fontSize: '16px', opacity: '0.5' }}>🔇</span>
+            <span className="no-audio" title="Audio yoʻq" style={{ fontSize: '16px', opacity: '0.5' }}>🔇</span>
           )}
         </div>
       )
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '120px',
       render: (_, word) => (
         <div className="table-actions">
@@ -357,22 +357,19 @@ const Words = () => {
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(word)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(word)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading words..." />;
-  }
 
   return (
     <div className="words-page">
@@ -380,7 +377,7 @@ const Words = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadInitialData()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
@@ -388,23 +385,23 @@ const Words = () => {
       <div className="page-header">
         <div className="page-header-left">
           <div className="breadcrumb">
-            <Link to="/courses" className="breadcrumb-link">Courses</Link>
+            <Link to="/courses" className="breadcrumb-link">Kurslar</Link>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-link">Modules</span>
+            <span className="breadcrumb-link">Modullar</span>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-link">Lessons</span>
+            <span className="breadcrumb-link">Darslar</span>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-current">Words</span>
+            <span className="breadcrumb-current">Soʻzlar</span>
           </div>
-          <h2>Words & Vocabulary</h2>
-          <p>Manage vocabulary for this lesson</p>
+          <h2>Soʻzlar va lugʻat</h2>
+          <p>Ushbu dars uchun lugʻatni boshqaring</p>
         </div>
         <div className="page-header-actions">
           <Link to="/courses" className="btn btn-secondary mr-10">
-            Back to Courses
+            Kurslarga qaytish
           </Link>
           <button className="btn btn-primary" onClick={openCreateModal}>
-            Add Word
+            Soʻz qoʻshish
           </button>
         </div>
       </div>
@@ -414,7 +411,7 @@ const Words = () => {
           columns={columns}
           data={words.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))}
           loading={loading}
-          emptyMessage="No words found. Add your first word to get started."
+          emptyMessage="Soʻzlar topilmadi. Birinchi soʻzingizni qoʻshing."
         />
       </div>
 
@@ -422,7 +419,7 @@ const Words = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Word' : 'Edit Word'}
+        title={modalMode === 'create' ? 'Yangi soʻz qoʻshish' : 'Soʻzni tahrirlash'}
         size="large"
       >
         <form onSubmit={handleSubmit}>
@@ -434,14 +431,14 @@ const Words = () => {
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Word *</label>
+              <label className="form-label">Soʻz *</label>
               <input
                 type="text"
                 name="word"
                 className={`form-control ${formErrors.word ? 'error' : ''}`}
                 value={formData.word}
                 onChange={handleFormChange}
-                placeholder="Enter word"
+                placeholder="Soʻzni kiriting"
                 disabled={modalLoading}
               />
               {formErrors.word && (
@@ -450,14 +447,14 @@ const Words = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Meaning *</label>
+              <label className="form-label">Maʻno *</label>
               <input
                 type="text"
                 name="meaning"
                 className={`form-control ${formErrors.meaning ? 'error' : ''}`}
                 value={formData.meaning}
                 onChange={handleFormChange}
-                placeholder="Enter meaning in Uzbek"
+                placeholder="Oʻzbek tilidagi maʻnosini kiriting"
                 disabled={modalLoading}
               />
               {formErrors.meaning && (
@@ -467,26 +464,26 @@ const Words = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Definition</label>
+            <label className="form-label">Taʻrif</label>
             <input
               type="text"
               name="definition"
               className="form-control"
               value={formData.definition}
               onChange={handleFormChange}
-              placeholder="Enter English definition"
+              placeholder="Ingliz tilidagi taʻrifini kiriting"
               disabled={modalLoading}
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Example Sentence</label>
+            <label className="form-label">Misol gap</label>
             <textarea
               name="example_sentence"
               className="form-control"
               value={formData.example_sentence}
               onChange={handleFormChange}
-              placeholder="Enter example sentence"
+              placeholder="Misol gapni kiriting"
               rows="3"
               disabled={modalLoading}
             />
@@ -494,7 +491,7 @@ const Words = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Order Index *</label>
+              <label className="form-label">Tartib raqami *</label>
               <input
                 type="number"
                 name="order_index"
@@ -513,7 +510,7 @@ const Words = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Image Upload</label>
+              <label className="form-label">Rasm yuklash</label>
               <input
                 type="file"
                 className="form-control"
@@ -523,18 +520,18 @@ const Words = () => {
               />
               {imageFile && (
                 <div className="file-info">
-                  Selected: {imageFile.name} ({formatFileSize(imageFile.size)})
+                  Tanlangan: {imageFile.name} ({formatFileSize(imageFile.size)})
                 </div>
               )}
               {selectedWord?.image_url && (
                 <div className="current-file">
-                  Current: Has image
+                  Hozirgi: Rasm mavjud
                 </div>
               )}
             </div>
 
             <div className="form-group">
-              <label className="form-label">Audio Upload</label>
+              <label className="form-label">Audio yuklash</label>
               <input
                 type="file"
                 className="form-control"
@@ -544,12 +541,12 @@ const Words = () => {
               />
               {audioFile && (
                 <div className="file-info">
-                  Selected: {audioFile.name} ({formatFileSize(audioFile.size)})
+                  Tanlangan: {audioFile.name} ({formatFileSize(audioFile.size)})
                 </div>
               )}
               {selectedWord?.audio_url && (
                 <div className="current-file">
-                  Current: Has audio
+                  Hozirgi: Audio mavjud
                 </div>
               )}
             </div>
@@ -562,14 +559,14 @@ const Words = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Word' : 'Update Word'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Soʻz qoʻshish' : 'Soʻzni yangilash'}
             </button>
           </div>
         </form>
@@ -579,13 +576,13 @@ const Words = () => {
       <Modal
         isOpen={showImagePreview}
         onClose={closeImagePreview}
-        title="Image Preview"
+        title="Rasmni oldindan koʻrish"
         size="large"
       >
         <div className="image-preview-container">
           <img 
             src={previewImageUrl} 
-            alt="Word illustration" 
+            alt="Soʻz rasmi" 
             style={{ maxWidth: '100%', height: 'auto' }}
           />
         </div>

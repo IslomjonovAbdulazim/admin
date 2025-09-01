@@ -48,7 +48,7 @@ const Modules = () => {
       if (modulesResponse.success) {
         setModules(modulesResponse.data || []);
       } else {
-        setError('Failed to load modules');
+        setError('Modullarni yuklashda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -98,15 +98,15 @@ const Modules = () => {
     const errors = {};
     
     if (!formData.title.trim()) {
-      errors.title = 'Module title is required';
+      errors.title = 'Modul nomi kiritish majburiy';
     }
     
     if (!formData.description.trim()) {
-      errors.description = 'Module description is required';
+      errors.description = 'Modul tavsifi kiritish majburiy';
     }
     
     if (!formData.order_index || formData.order_index < 1) {
-      errors.order_index = 'Order index must be a positive number';
+      errors.order_index = 'Tartib raqami musbat son boʻlishi kerak';
     }
     
     setFormErrors(errors);
@@ -137,7 +137,7 @@ const Modules = () => {
         closeModal();
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} module`);
+        setError(response.detail || `Modulni ${modalMode === 'create' ? 'qoʻshishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -147,7 +147,7 @@ const Modules = () => {
   };
 
   const handleDelete = async (module) => {
-    if (!window.confirm(`Are you sure you want to delete "${module.title}"? This will also delete all associated lessons.`)) {
+    if (!window.confirm(`"${module.title}" modulini oʻchirishni xohlaysizmi? Bu barcha bogʻlangan darslarni ham oʻchiradi.`)) {
       return;
     }
 
@@ -156,7 +156,7 @@ const Modules = () => {
       if (response.success) {
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete module');
+        setError(response.detail || 'Modulni oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -176,34 +176,34 @@ const Modules = () => {
   const columns = [
     {
       key: 'order_index',
-      title: 'Order',
+      title: 'Tartib',
       width: '80px',
       render: (value) => (
-        <span className="order-badge">{value || 'N/A'}</span>
+        <span className="order-badge">{value || 'Maʻlumot yoʻq'}</span>
       )
     },
     {
       key: 'title',
-      title: 'Module Title',
-      render: (value) => value || 'N/A'
+      title: 'Modul nomi',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'description',
-      title: 'Description',
+      title: 'Tavsif',
       render: (value) => (
         <div className="module-description">
-          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'N/A'}
+          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'Maʻlumot yoʻq'}
         </div>
       )
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '200px',
       render: (_, module) => (
         <div className="table-actions">
@@ -211,28 +211,25 @@ const Modules = () => {
             to={`/modules/${module.id}/lessons`}
             className="btn btn-sm btn-primary"
           >
-            Lessons
+            Darslar
           </Link>
           <button 
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(module)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(module)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading modules..." />;
-  }
 
   return (
     <div className="modules-page">
@@ -240,7 +237,7 @@ const Modules = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadInitialData()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
@@ -248,19 +245,19 @@ const Modules = () => {
       <div className="page-header">
         <div className="page-header-left">
           <div className="breadcrumb">
-            <Link to="/courses" className="breadcrumb-link">Courses</Link>
+            <Link to="/courses" className="breadcrumb-link">Kurslar</Link>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-current">{courseInfo?.title || 'Modules'}</span>
+            <span className="breadcrumb-current">{courseInfo?.title || 'Modullar'}</span>
           </div>
-          <h2>Modules</h2>
-          <p>Manage modules for this course</p>
+          <h2>Modullar</h2>
+          <p>Ushbu kurs uchun modullarni boshqaring</p>
         </div>
         <div className="page-header-actions">
           <Link to="/courses" className="btn btn-secondary mr-10">
-            Back to Courses
+            Kurslarga qaytish
           </Link>
           <button className="btn btn-primary" onClick={openCreateModal}>
-            Add Module
+            Modul qoʻshish
           </button>
         </div>
       </div>
@@ -270,7 +267,7 @@ const Modules = () => {
           columns={columns}
           data={modules.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))}
           loading={loading}
-          emptyMessage="No modules found. Add your first module to get started."
+          emptyMessage="Modullar topilmadi. Birinchi modulingizni qoʻshing."
         />
       </div>
 
@@ -278,19 +275,19 @@ const Modules = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Module' : 'Edit Module'}
+        title={modalMode === 'create' ? 'Yangi modul qoʻshish' : 'Modulni tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Module Title *</label>
+            <label className="form-label">Modul nomi *</label>
             <input
               type="text"
               name="title"
               className={`form-control ${formErrors.title ? 'error' : ''}`}
               value={formData.title}
               onChange={handleFormChange}
-              placeholder="Enter module title"
+              placeholder="Modul nomini kiriting"
               disabled={modalLoading}
             />
             {formErrors.title && (
@@ -299,13 +296,13 @@ const Modules = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Description *</label>
+            <label className="form-label">Tavsif *</label>
             <textarea
               name="description"
               className={`form-control ${formErrors.description ? 'error' : ''}`}
               value={formData.description}
               onChange={handleFormChange}
-              placeholder="Enter module description"
+              placeholder="Modul tavsifini kiriting"
               rows="4"
               disabled={modalLoading}
             />
@@ -315,7 +312,7 @@ const Modules = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Order Index *</label>
+            <label className="form-label">Tartib raqami *</label>
             <input
               type="number"
               name="order_index"
@@ -338,14 +335,14 @@ const Modules = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Module' : 'Update Module'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Modul qoʻshish' : 'Modulni yangilash'}
             </button>
           </div>
         </form>

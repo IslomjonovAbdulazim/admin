@@ -16,7 +16,7 @@ const Login = () => {
 
   // Redirect if already authenticated
   if (loading) {
-    return <LoadingSpinner message="Loading..." />;
+    return <LoadingSpinner message="Yuklanmoqda..." />;
   }
 
   if (isAuthenticated) {
@@ -36,7 +36,7 @@ const Login = () => {
     e.preventDefault();
     
     if (!formData.email.trim() || !formData.password.trim()) {
-      setError('Please fill in all fields');
+      setError('Iltimos, barcha maydonlarni toʻldiring');
       return;
     }
 
@@ -51,7 +51,7 @@ const Login = () => {
       }
       // If successful, the AuthContext will handle the redirect
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError('Kirishda xatolik yuz berdi. Qayta urinib koʻring.');
     }
     
     setFormLoading(false);
@@ -63,7 +63,7 @@ const Login = () => {
         <div className="login-card">
           <div className="login-header">
             <h1 className="login-title">EduTi Admin</h1>
-            <p className="login-subtitle">Sign in to your admin account</p>
+            <p className="login-subtitle">Admin hisobingizga kiring</p>
           </div>
 
           <form className="login-form" onSubmit={handleSubmit}>
@@ -75,14 +75,14 @@ const Login = () => {
 
             <div className="form-group">
               <label htmlFor="email" className="form-label">
-                Email Address
+                Email manzil
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 className="form-control"
-                placeholder="Enter your email"
+                placeholder="Email manzilingizni kiriting"
                 value={formData.email}
                 onChange={handleChange}
                 disabled={formLoading}
@@ -93,14 +93,14 @@ const Login = () => {
 
             <div className="form-group">
               <label htmlFor="password" className="form-label">
-                Password
+                Parol
               </label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 className="form-control"
-                placeholder="Enter your password"
+                placeholder="Parolingizni kiriting"
                 value={formData.password}
                 onChange={handleChange}
                 disabled={formLoading}
@@ -114,13 +114,13 @@ const Login = () => {
               className="btn btn-primary btn-lg w-100"
               disabled={formLoading || !formData.email.trim() || !formData.password.trim()}
             >
-              {formLoading ? 'Signing in...' : 'Sign In'}
+              {formLoading ? 'Kirilmoqda...' : 'Kirish'}
             </button>
           </form>
 
           <div className="login-footer">
             <p className="login-info">
-              Welcome to EduTi Learning Center Admin Panel
+              EduTi Oʻquv Markazi Admin Paneliga xush kelibsiz
             </p>
           </div>
         </div>

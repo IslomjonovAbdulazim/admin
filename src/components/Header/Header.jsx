@@ -110,13 +110,13 @@ const Header = ({ title, onMenuToggle }) => {
                     setShowUserMenu(false);
                   }}
                 >
-                  Change Password
+                  Parolni oʻzgartirish
                 </button>
                 <button 
                   className="user-menu-item logout"
                   onClick={handleLogout}
                 >
-                  Logout
+                  Chiqish
                 </button>
               </div>
             )}
@@ -141,7 +141,7 @@ const Header = ({ title, onMenuToggle }) => {
           setError('');
           setSuccess('');
         }}
-        title="Change Password"
+        title="Parolni oʻzgartirish"
         size="small"
       >
         <form onSubmit={handlePasswordChange}>
@@ -149,13 +149,13 @@ const Header = ({ title, onMenuToggle }) => {
           {success && <div className="alert alert-success">{success}</div>}
           
           <div className="form-group">
-            <label className="form-label">New Password</label>
+            <label className="form-label">Yangi parol</label>
             <input
               type="password"
               className="form-control"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter new password"
+              placeholder="Yangi parolni kiriting"
               required
             />
           </div>
@@ -171,14 +171,14 @@ const Header = ({ title, onMenuToggle }) => {
                 setSuccess('');
               }}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={loading || !newPassword.trim()}
             >
-              {loading ? 'Changing...' : 'Change Password'}
+              {loading ? 'Oʻzgartirilmoqda...' : 'Parolni oʻzgartirish'}
             </button>
           </div>
         </form>

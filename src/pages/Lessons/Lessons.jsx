@@ -39,12 +39,12 @@ const Lessons = () => {
       if (lessonsResponse.success) {
         setLessons(lessonsResponse.data || []);
       } else {
-        setError('Failed to load lessons');
+        setError('Darslarni yuklashda xatolik yuz berdi');
       }
       
       // Note: In a real app, you'd need to get module info via a separate endpoint
       // For now, we'll set basic module info
-      setModuleInfo({ id: moduleId, title: `Module ${moduleId}` });
+      setModuleInfo({ id: moduleId, title: `Modul ${moduleId}` });
       
     } catch (error) {
       setError(getErrorMessage(error));
@@ -94,15 +94,15 @@ const Lessons = () => {
     const errors = {};
     
     if (!formData.title.trim()) {
-      errors.title = 'Lesson title is required';
+      errors.title = 'Dars nomi kiritish majburiy';
     }
     
     if (!formData.description.trim()) {
-      errors.description = 'Lesson description is required';
+      errors.description = 'Dars tavsifi kiritish majburiy';
     }
     
     if (!formData.order_index || formData.order_index < 1) {
-      errors.order_index = 'Order index must be a positive number';
+      errors.order_index = 'Tartib raqami musbat son boʻlishi kerak';
     }
     
     setFormErrors(errors);
@@ -133,7 +133,7 @@ const Lessons = () => {
         closeModal();
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || `Failed to ${modalMode} lesson`);
+        setError(response.detail || `Darsni ${modalMode === 'create' ? 'qoʻshishda' : 'yangilashda'} xatolik yuz berdi`);
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -143,7 +143,7 @@ const Lessons = () => {
   };
 
   const handleDelete = async (lesson) => {
-    if (!window.confirm(`Are you sure you want to delete "${lesson.title}"? This will also delete all associated words.`)) {
+    if (!window.confirm(`"${lesson.title}" darsini oʻchirishni xohlaysizmi? Bu barcha bogʻlangan soʻzlarni ham oʻchiradi.`)) {
       return;
     }
 
@@ -152,7 +152,7 @@ const Lessons = () => {
       if (response.success) {
         loadInitialData(); // Reload the list
       } else {
-        setError(response.detail || 'Failed to delete lesson');
+        setError(response.detail || 'Darsni oʻchirishda xatolik yuz berdi');
       }
     } catch (error) {
       setError(getErrorMessage(error));
@@ -172,34 +172,34 @@ const Lessons = () => {
   const columns = [
     {
       key: 'order_index',
-      title: 'Order',
+      title: 'Tartib',
       width: '80px',
       render: (value) => (
-        <span className="order-badge">{value || 'N/A'}</span>
+        <span className="order-badge">{value || 'Maʻlumot yoʻq'}</span>
       )
     },
     {
       key: 'title',
-      title: 'Lesson Title',
-      render: (value) => value || 'N/A'
+      title: 'Dars nomi',
+      render: (value) => value || 'Maʻlumot yoʻq'
     },
     {
       key: 'description',
-      title: 'Description',
+      title: 'Tavsif',
       render: (value) => (
         <div className="lesson-description">
-          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'N/A'}
+          {value ? (value.length > 100 ? `${value.substring(0, 100)}...` : value) : 'Maʻlumot yoʻq'}
         </div>
       )
     },
     {
       key: 'created_at',
-      title: 'Created',
+      title: 'Yaratilgan sana',
       render: (value) => formatDate(value)
     },
     {
       key: 'actions',
-      title: 'Actions',
+      title: 'Amallar',
       width: '200px',
       render: (_, lesson) => (
         <div className="table-actions">
@@ -207,28 +207,25 @@ const Lessons = () => {
             to={`/lessons/${lesson.id}/words`}
             className="btn btn-sm btn-primary"
           >
-            Words
+            Soʻzlar
           </Link>
           <button 
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(lesson)}
           >
-            Edit
+            Tahrirlash
           </button>
           <button 
             className="btn btn-sm btn-danger"
             onClick={() => handleDelete(lesson)}
           >
-            Delete
+            Oʻchirish
           </button>
         </div>
       )
     }
   ];
 
-  if (loading) {
-    return <LoadingSpinner message="Loading lessons..." />;
-  }
 
   return (
     <div className="lessons-page">
@@ -236,7 +233,7 @@ const Lessons = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadInitialData()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
@@ -244,21 +241,21 @@ const Lessons = () => {
       <div className="page-header">
         <div className="page-header-left">
           <div className="breadcrumb">
-            <Link to="/courses" className="breadcrumb-link">Courses</Link>
+            <Link to="/courses" className="breadcrumb-link">Kurslar</Link>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-link">Modules</span>
+            <span className="breadcrumb-link">Modullar</span>
             <span className="breadcrumb-separator">→</span>
-            <span className="breadcrumb-current">{moduleInfo?.title || 'Lessons'}</span>
+            <span className="breadcrumb-current">{moduleInfo?.title || 'Darslar'}</span>
           </div>
-          <h2>Lessons</h2>
-          <p>Manage lessons for this module</p>
+          <h2>Darslar</h2>
+          <p>Ushbu modul uchun darslarni boshqaring</p>
         </div>
         <div className="page-header-actions">
           <Link to="/courses" className="btn btn-secondary mr-10">
-            Back to Courses
+            Kurslarga qaytish
           </Link>
           <button className="btn btn-primary" onClick={openCreateModal}>
-            Add Lesson
+            Dars qoʻshish
           </button>
         </div>
       </div>
@@ -268,7 +265,7 @@ const Lessons = () => {
           columns={columns}
           data={lessons.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))}
           loading={loading}
-          emptyMessage="No lessons found. Add your first lesson to get started."
+          emptyMessage="Darslar topilmadi. Birinchi darsingizni qoʻshing."
         />
       </div>
 
@@ -276,19 +273,19 @@ const Lessons = () => {
       <Modal
         isOpen={showModal}
         onClose={closeModal}
-        title={modalMode === 'create' ? 'Add New Lesson' : 'Edit Lesson'}
+        title={modalMode === 'create' ? 'Yangi dars qoʻshish' : 'Darsni tahrirlash'}
         size="medium"
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Lesson Title *</label>
+            <label className="form-label">Dars nomi *</label>
             <input
               type="text"
               name="title"
               className={`form-control ${formErrors.title ? 'error' : ''}`}
               value={formData.title}
               onChange={handleFormChange}
-              placeholder="Enter lesson title"
+              placeholder="Dars nomini kiriting"
               disabled={modalLoading}
             />
             {formErrors.title && (
@@ -297,13 +294,13 @@ const Lessons = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Description *</label>
+            <label className="form-label">Tavsif *</label>
             <textarea
               name="description"
               className={`form-control ${formErrors.description ? 'error' : ''}`}
               value={formData.description}
               onChange={handleFormChange}
-              placeholder="Enter lesson description"
+              placeholder="Dars tavsifini kiriting"
               rows="4"
               disabled={modalLoading}
             />
@@ -313,7 +310,7 @@ const Lessons = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Order Index *</label>
+            <label className="form-label">Tartib raqami *</label>
             <input
               type="number"
               name="order_index"
@@ -336,14 +333,14 @@ const Lessons = () => {
               onClick={closeModal}
               disabled={modalLoading}
             >
-              Cancel
+              Bekor qilish
             </button>
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={modalLoading}
             >
-              {modalLoading ? 'Saving...' : modalMode === 'create' ? 'Add Lesson' : 'Update Lesson'}
+              {modalLoading ? 'Saqlanmoqda...' : modalMode === 'create' ? 'Dars qoʻshish' : 'Darsni yangilash'}
             </button>
           </div>
         </form>

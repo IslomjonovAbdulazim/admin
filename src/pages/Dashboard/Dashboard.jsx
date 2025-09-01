@@ -24,19 +24,16 @@ const Dashboard = () => {
       if (response.success) {
         setDashboardData(response.data);
       } else {
-        setError('Failed to load dashboard data');
+        setError('Boshqaruv paneli maʻlumotlarini yuklashda xatolik yuz berdi');
       }
     } catch (error) {
-      setError('Failed to load dashboard data');
+      setError('Boshqaruv paneli maʻlumotlarini yuklashda xatolik yuz berdi');
       console.error('Dashboard error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner message="Loading dashboard..." />;
-  }
 
   if (error) {
     return (
@@ -44,7 +41,7 @@ const Dashboard = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-primary mt-10" onClick={loadDashboardData}>
-            Try Again
+            Qayta urinish
           </button>
         </div>
       </div>
@@ -56,8 +53,8 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Welcome to {center?.title || 'EduTi Admin'}</h1>
-        <p>Here's what's happening with your learning center today.</p>
+        <h1>{center?.title || 'EduTi Admin paneli'}ga xush kelibsiz</h1>
+        <p>Bugun oʻquv markazingizda sodir boʻlyotgan voqealar.</p>
       </div>
 
       {/* Stats Cards */}
@@ -66,9 +63,9 @@ const Dashboard = () => {
           <div className="stat-icon">👥</div>
           <div className="stat-content">
             <div className="stat-number">{stats?.total_students || 0}</div>
-            <div className="stat-label">Total Students</div>
+            <div className="stat-label">Jami talabalar</div>
             <Link to={ROUTES.STUDENTS} className="stat-link">
-              View all →
+              Barchasini koʻrish →
             </Link>
           </div>
         </div>
@@ -77,9 +74,9 @@ const Dashboard = () => {
           <div className="stat-icon">👨‍🏫</div>
           <div className="stat-content">
             <div className="stat-number">{stats?.total_teachers || 0}</div>
-            <div className="stat-label">Total Teachers</div>
+            <div className="stat-label">Jami oʻqituvchilar</div>
             <Link to={ROUTES.TEACHERS} className="stat-link">
-              View all →
+              Barchasini koʻrish →
             </Link>
           </div>
         </div>
@@ -88,9 +85,9 @@ const Dashboard = () => {
           <div className="stat-icon">👥</div>
           <div className="stat-content">
             <div className="stat-number">{stats?.total_groups || 0}</div>
-            <div className="stat-label">Total Groups</div>
+            <div className="stat-label">Jami guruhlar</div>
             <Link to={ROUTES.GROUPS} className="stat-link">
-              View all →
+              Barchasini koʻrish →
             </Link>
           </div>
         </div>
@@ -99,9 +96,9 @@ const Dashboard = () => {
           <div className="stat-icon">📚</div>
           <div className="stat-content">
             <div className="stat-number">{stats?.total_courses || 0}</div>
-            <div className="stat-label">Total Courses</div>
+            <div className="stat-label">Jami kurslar</div>
             <Link to={ROUTES.COURSES} className="stat-link">
-              View all →
+              Barchasini koʻrish →
             </Link>
           </div>
         </div>
@@ -111,27 +108,27 @@ const Dashboard = () => {
         {/* Center Info */}
         <div className="dashboard-section">
           <div className="card">
-            <h3>Center Information</h3>
+            <h3>Markaz maʻlumotlari</h3>
             <div className="center-info">
               <div className="center-detail">
-                <span className="center-label">Center Name:</span>
-                <span className="center-value">{center?.title || 'N/A'}</span>
+                <span className="center-label">Markaz nomi:</span>
+                <span className="center-value">{center?.title || 'Maʻlumot yoʻq'}</span>
               </div>
               <div className="center-detail">
-                <span className="center-label">Student Limit:</span>
+                <span className="center-label">Talabalar chegarasi:</span>
                 <span className="center-value">
                   {stats?.total_students || 0} / {center?.student_limit || 0}
                 </span>
               </div>
               <div className="center-detail">
-                <span className="center-label">Days Remaining:</span>
+                <span className="center-label">Qolgan kunlar:</span>
                 <span className={`center-value ${(center?.days_remaining || 0) < 7 ? 'warning' : ''}`}>
-                  {center?.days_remaining || 0} days
+                  {center?.days_remaining || 0} kun
                 </span>
               </div>
             </div>
             <Link to={ROUTES.CENTER} className="btn btn-primary mt-20">
-              Manage Center
+              Markazni boshqarish
             </Link>
           </div>
         </div>
@@ -140,9 +137,9 @@ const Dashboard = () => {
         <div className="dashboard-section">
           <div className="card">
             <div className="card-header">
-              <h3>Recent Students</h3>
+              <h3>Soʻnggi talabalar</h3>
               <Link to={ROUTES.STUDENTS} className="btn btn-sm btn-secondary">
-                View All
+                Barchasini koʻrish
               </Link>
             </div>
             
@@ -156,7 +153,7 @@ const Dashboard = () => {
                     <div className="student-info">
                       <div className="student-name">{student.full_name}</div>
                       <div className="student-date">
-                        Joined {formatDate(student.created_at)}
+                        Qoʻshilgan: {formatDate(student.created_at)}
                       </div>
                     </div>
                   </div>
@@ -164,9 +161,9 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="empty-state">
-                <p>No recent students found</p>
+                <p>Soʻnggi talabalar topilmadi</p>
                 <Link to={ROUTES.STUDENTS} className="btn btn-primary">
-                  Add Student
+                  Talaba qoʻshish
                 </Link>
               </div>
             )}
@@ -177,23 +174,23 @@ const Dashboard = () => {
       {/* Quick Actions */}
       <div className="quick-actions">
         <div className="card">
-          <h3>Quick Actions</h3>
+          <h3>Tezkor amallar</h3>
           <div className="actions-grid">
             <Link to={ROUTES.STUDENTS} className="action-btn">
               <span className="action-icon">👥</span>
-              <span>Add Student</span>
+              <span>Talaba qoʻshish</span>
             </Link>
             <Link to={ROUTES.TEACHERS} className="action-btn">
               <span className="action-icon">👨‍🏫</span>
-              <span>Add Teacher</span>
+              <span>Oʻqituvchi qoʻshish</span>
             </Link>
             <Link to={ROUTES.GROUPS} className="action-btn">
               <span className="action-icon">👥</span>
-              <span>Create Group</span>
+              <span>Guruh yaratish</span>
             </Link>
             <Link to={ROUTES.COURSES} className="action-btn">
               <span className="action-icon">📚</span>
-              <span>Add Course</span>
+              <span>Kurs qoʻshish</span>
             </Link>
           </div>
         </div>

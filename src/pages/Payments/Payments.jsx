@@ -37,7 +37,7 @@ const Payments = () => {
           total: paymentsResponse.data.total || 0
         }));
       } else {
-        setError('Failed to load payment history');
+        setError('Toʻlov tarixini yuklashda xatolik yuz berdi');
       }
       
       if (centerResponse.success) {
@@ -70,56 +70,53 @@ const Payments = () => {
 
   const getStatusBadge = (daysRemaining) => {
     if (daysRemaining > 30) {
-      return <span className="status-badge status-active">Active</span>;
+      return <span className="status-badge status-active">Faol</span>;
     } else if (daysRemaining > 7) {
-      return <span className="status-badge status-warning">Expiring Soon</span>;
+      return <span className="status-badge status-warning">Tez orada tugaydi</span>;
     } else if (daysRemaining > 0) {
-      return <span className="status-badge status-critical">Critical</span>;
+      return <span className="status-badge status-critical">Muhim</span>;
     } else {
-      return <span className="status-badge status-expired">Expired</span>;
+      return <span className="status-badge status-expired">Muddati tugagan</span>;
     }
   };
 
   const columns = [
     {
       key: 'id',
-      title: 'Payment ID',
+      title: 'Toʻlov ID',
       width: '100px',
       render: (value) => `#${value}`
     },
     {
       key: 'amount',
-      title: 'Amount',
+      title: 'Miqdor',
       render: (value) => (
         <span className="payment-amount">{formatAmount(value)}</span>
       )
     },
     {
       key: 'days_added',
-      title: 'Days Added',
+      title: 'Qoʻshilgan kunlar',
       render: (value) => (
-        <span className="days-added">{value} days</span>
+        <span className="days-added">{value} kun</span>
       )
     },
     {
       key: 'description',
-      title: 'Description',
+      title: 'Tavsif',
       render: (value) => (
         <div className="payment-description">
-          {value || 'Payment transaction'}
+          {value || 'Toʻlov tranzaksiyasi'}
         </div>
       )
     },
     {
       key: 'created_at',
-      title: 'Date',
+      title: 'Sana',
       render: (value) => formatDate(value)
     }
   ];
 
-  if (loading && payments.length === 0) {
-    return <LoadingSpinner message="Loading payment history..." />;
-  }
 
   return (
     <div className="payments-page">
@@ -127,18 +124,18 @@ const Payments = () => {
         <div className="alert alert-error">
           {error}
           <button className="btn btn-sm btn-primary ml-10" onClick={() => loadInitialData()}>
-            Retry
+            Qayta urinish
           </button>
         </div>
       )}
 
       <div className="page-header">
         <div className="page-header-left">
-          <h2>Payments & Subscription</h2>
-          <p>View payment history and manage your learning center subscription</p>
+          <h2>Toʻlovlar va obuna</h2>
+          <p>Toʻlov tarixini koʻring va oʻquv markazi obunangizni boshqaring</p>
         </div>
         <button className="btn btn-secondary" onClick={() => loadInitialData()}>
-          Refresh
+          Yangilash
         </button>
       </div>
 
@@ -147,30 +144,30 @@ const Payments = () => {
         <div className="subscription-section">
           <div className="subscription-card">
             <div className="card-header">
-              <h3>Subscription Status</h3>
+              <h3>Obuna holati</h3>
               {getStatusBadge(centerInfo.days_remaining)}
             </div>
             
             <div className="subscription-details">
               <div className="subscription-grid">
                 <div className="subscription-item">
-                  <div className="subscription-label">Center Name</div>
+                  <div className="subscription-label">Markaz nomi</div>
                   <div className="subscription-value">{centerInfo.title}</div>
                 </div>
                 <div className="subscription-item">
-                  <div className="subscription-label">Student Limit</div>
-                  <div className="subscription-value">{centerInfo.student_limit} students</div>
+                  <div className="subscription-label">Talabalar chegarasi</div>
+                  <div className="subscription-value">{centerInfo.student_limit} talaba</div>
                 </div>
                 <div className="subscription-item">
-                  <div className="subscription-label">Days Remaining</div>
+                  <div className="subscription-label">Qolgan kunlar</div>
                   <div className={`subscription-value ${centerInfo.days_remaining < 7 ? 'critical' : ''}`}>
-                    {centerInfo.days_remaining} days
+                    {centerInfo.days_remaining} kun
                   </div>
                 </div>
                 <div className="subscription-item">
-                  <div className="subscription-label">Status</div>
+                  <div className="subscription-label">Holat</div>
                   <div className="subscription-value">
-                    {centerInfo.is_active ? 'Active' : 'Inactive'}
+                    {centerInfo.is_active ? 'Faol' : 'Faol emas'}
                   </div>
                 </div>
               </div>
@@ -179,10 +176,10 @@ const Payments = () => {
                 <div className="subscription-warning">
                   <div className="warning-icon">⚠️</div>
                   <div className="warning-content">
-                    <div className="warning-title">Subscription Expiring Soon</div>
+                    <div className="warning-title">Obuna muddati tugayapti</div>
                     <div className="warning-message">
-                      Your subscription will expire in {centerInfo.days_remaining} days. 
-                      Please contact support to renew your subscription.
+                      Obunangiz {centerInfo.days_remaining} kundan keyin tugaydi. 
+                      Obunani yangilash uchun qoʻllab-quvvatlash xizmatiga murojaat qiling.
                     </div>
                   </div>
                 </div>
@@ -196,8 +193,8 @@ const Payments = () => {
       <div className="payments-section">
         <div className="payments-card">
           <div className="card-header">
-            <h3>Payment History</h3>
-            <span className="card-subtitle">All subscription payments and transactions</span>
+            <h3>Toʻlov tarixi</h3>
+            <span className="card-subtitle">Barcha obuna toʻlovlari va tranzaksiyalar</span>
           </div>
           
           <div className="payments-content">
@@ -205,7 +202,7 @@ const Payments = () => {
               columns={columns}
               data={payments}
               loading={loading}
-              emptyMessage="No payment history found."
+              emptyMessage="Toʻlov tarixi topilmadi."
             />
 
             {pagination.total > pagination.size && (
@@ -225,7 +222,7 @@ const Payments = () => {
         <div className="summary-section">
           <div className="summary-card">
             <div className="card-header">
-              <h3>Payment Summary</h3>
+              <h3>Toʻlov xulosasi</h3>
             </div>
             
             <div className="summary-grid">
@@ -237,7 +234,7 @@ const Payments = () => {
                       payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
                     )}
                   </div>
-                  <div className="summary-label">Total Paid</div>
+                  <div className="summary-label">Jami toʻlangan</div>
                 </div>
               </div>
               
@@ -247,7 +244,7 @@ const Payments = () => {
                   <div className="summary-number">
                     {payments.reduce((sum, payment) => sum + (payment.days_added || 0), 0)}
                   </div>
-                  <div className="summary-label">Total Days Added</div>
+                  <div className="summary-label">Jami qoʻshilgan kunlar</div>
                 </div>
               </div>
               
@@ -255,7 +252,7 @@ const Payments = () => {
                 <div className="summary-icon">📊</div>
                 <div className="summary-content">
                   <div className="summary-number">{payments.length}</div>
-                  <div className="summary-label">Total Transactions</div>
+                  <div className="summary-label">Jami tranzaksiyalar</div>
                 </div>
               </div>
               
@@ -268,7 +265,7 @@ const Payments = () => {
                       : formatAmount(0)
                     }
                   </div>
-                  <div className="summary-label">Average Payment</div>
+                  <div className="summary-label">Oʻrtacha toʻlov</div>
                 </div>
               </div>
             </div>
@@ -282,10 +279,10 @@ const Payments = () => {
           <div className="support-content">
             <div className="support-icon">💬</div>
             <div className="support-text">
-              <h4>Need Help with Payments?</h4>
-              <p>Contact our support team for payment issues or subscription questions.</p>
+              <h4>Toʻlovlar boʻyicha yordam kerakmi?</h4>
+              <p>Toʻlov masalalari yoki obuna savollari uchun qoʻllab-quvvatlash jamoamizga murojaat qiling.</p>
             </div>
-            <button className="btn btn-primary">Contact Support</button>
+            <button className="btn btn-primary">Qoʻllab-quvvatlash bilan bogʻlanish</button>
           </div>
         </div>
       </div>
