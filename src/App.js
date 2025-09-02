@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Students from './pages/Students/Students';
 import Teachers from './pages/Teachers/Teachers';
 import Groups from './pages/Groups/Groups';
+import GroupMembers from './pages/GroupMembers/GroupMembers';
 import Courses from './pages/Courses/Courses';
 import Modules from './pages/Modules/Modules';
 import Lessons from './pages/Lessons/Lessons';
@@ -101,6 +102,14 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Groups />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/groups/:groupId/members" 
+          element={
+            <ProtectedRoute>
+              <GroupMembers />
             </ProtectedRoute>
           } 
         />

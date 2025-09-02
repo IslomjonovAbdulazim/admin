@@ -8,6 +8,7 @@ export const groupsService = {
     return response.data;
   },
 
+
   // Create new group
   create: async (groupData) => {
     const response = await apiRequest.post(API_ENDPOINTS.GROUPS, groupData);

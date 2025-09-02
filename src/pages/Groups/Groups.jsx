@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { groupsService } from '../../services/groups';
 import { usersService } from '../../services/users';
 import { coursesService } from '../../services/courses';
@@ -9,6 +10,7 @@ import { formatDate, getErrorMessage } from '../../utils/helpers';
 import './Groups.css';
 
 const Groups = () => {
+  const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -20,6 +22,7 @@ const Groups = () => {
   const [modalMode, setModalMode] = useState('create'); // 'create' | 'edit'
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+  
   
   // Form data
   const [formData, setFormData] = useState({
@@ -188,6 +191,16 @@ const Groups = () => {
     }
   };
 
+  const openMembersPage = (group) => {
+    navigate(`/groups/${group.id}/members`, { 
+      state: { 
+        group: group,
+        groupName: group.name 
+      } 
+    });
+  };
+
+
   const getTeacherName = (teacherId) => {
     const teacher = teachers.find(t => t.id === teacherId);
     return teacher ? teacher.full_name : 'Nomaʻlum';
@@ -222,9 +235,16 @@ const Groups = () => {
     {
       key: 'actions',
       title: 'Amallar',
-      width: '120px',
+      width: '180px',
       render: (_, group) => (
         <div className="table-actions">
+          <button 
+            className="btn btn-sm btn-info"
+            onClick={() => openMembersPage(group)}
+            title="A'zolarni boshqarish"
+          >
+            A'zolar
+          </button>
           <button 
             className="btn btn-sm btn-secondary"
             onClick={() => openEditModal(group)}
@@ -358,6 +378,7 @@ const Groups = () => {
           </div>
         </form>
       </Modal>
+
     </div>
   );
 };
