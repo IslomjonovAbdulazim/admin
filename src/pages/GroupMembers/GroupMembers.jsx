@@ -50,15 +50,15 @@ const GroupMembers = () => {
   }, [loadData]);
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      setDropdownOpen(null);
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.dropdown')) {
+        setDropdownOpen(null);
+      }
     };
     
-    if (dropdownOpen) {
-      document.addEventListener('click', handleClickOutside);
-      return () => document.removeEventListener('click', handleClickOutside);
-    }
-  }, [dropdownOpen]);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const handleAddMember = async (studentId) => {
     try {
@@ -177,15 +177,22 @@ const GroupMembers = () => {
                       <div className="dropdown">
                         <button
                           className="dropdown-toggle"
-                          onClick={() => setDropdownOpen(dropdownOpen === member.profile_id ? null : member.profile_id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDropdownOpen(dropdownOpen === member.profile_id ? null : member.profile_id);
+                          }}
                         >
                           ⋯
                         </button>
                         {dropdownOpen === member.profile_id && (
-                          <div className="dropdown-menu">
+                          <div 
+                            className="dropdown-menu"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <button
                               className="dropdown-item danger"
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setDropdownOpen(null);
                                 handleRemoveMember(member.profile_id);
                               }}
