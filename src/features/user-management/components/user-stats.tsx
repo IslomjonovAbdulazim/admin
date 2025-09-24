@@ -39,13 +39,13 @@ export function UserStats({ users, className }: UserStatsProps) {
       borderColor: 'border-emerald-200 dark:border-emerald-800',
     },
     {
-      title: 'Learning Centers',
-      value: new Set(users.map(u => u.learning_center_id)).size,
+      title: 'Inactive',
+      value: stats.inactive,
       icon: Shield,
-      color: 'purple',
-      bgColor: 'bg-purple-50 dark:bg-purple-950/20',
-      iconColor: 'text-purple-600 dark:text-purple-400',
-      borderColor: 'border-purple-200 dark:border-purple-800',
+      color: 'red',
+      bgColor: 'bg-red-50 dark:bg-red-950/20',
+      iconColor: 'text-red-600 dark:text-red-400',
+      borderColor: 'border-red-200 dark:border-red-800',
     },
   ]
 

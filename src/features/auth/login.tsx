@@ -49,7 +49,7 @@ export function Login() {
   })
 
   // Countdown timer for retry logic
-  const { timeLeft, isActive, start, formatTime } = useCountdown({
+  const { isActive, start, formatTime } = useCountdown({
     initialTime: phoneVerification.getWaitTime(),
     onComplete: () => {
       // Timer completed, user can retry

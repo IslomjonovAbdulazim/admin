@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useSearch, useNavigate } from '@tanstack/react-router'
-import { BookOpen, GraduationCap, FileText, Type, Volume2, Image } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useSearch } from '@tanstack/react-router'
+import { Type, Volume2, Image } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Header } from '@/components/layout/header'
@@ -12,12 +12,12 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { ConfigDrawer } from '@/components/config-drawer'
-import { adminContentApi, type Course, type Lesson, type Word } from '@/lib/content-api'
+import { adminContentApi, type Word } from '@/lib/content-api'
 import { getStaticUrl } from '@/lib/utils'
 import { ImagePreviewDialog } from './components/image-preview-dialog'
 
 export function WordsViewPage() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate() // TODO: implement navigation if needed
   const search = useSearch({ from: '/_authenticated/content/words' })
   const [selectedCourseId, setSelectedCourseId] = useState<string>('')
   const [selectedLessonId, setSelectedLessonId] = useState<string>('')
@@ -200,7 +200,7 @@ function WordCard({ word, onImageClick }: { word: Word; onImageClick?: (imageUrl
             <button 
               className='flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800'
               onClick={() => {
-                const audioUrl = getStaticUrl(word.audio)
+                const audioUrl = getStaticUrl(word.audio || null)
                 if (audioUrl) {
                   const audio = new Audio(audioUrl)
                   audio.play().catch(console.error)
@@ -215,7 +215,7 @@ function WordCard({ word, onImageClick }: { word: Word; onImageClick?: (imageUrl
             <button 
               className='flex items-center gap-1 text-xs text-green-600 hover:text-green-800'
               onClick={() => {
-                const imageUrl = getStaticUrl(word.image)
+                const imageUrl = getStaticUrl(word.image || null)
                 if (imageUrl) {
                   onImageClick?.(imageUrl, word.word)
                 }

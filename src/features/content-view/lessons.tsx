@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearch, useNavigate } from '@tanstack/react-router'
-import { BookOpen, GraduationCap, FileText, ArrowLeft, ChevronRight } from 'lucide-react'
+import { BookOpen, GraduationCap, ChevronRight } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -12,11 +12,10 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { ConfigDrawer } from '@/components/config-drawer'
-import { adminContentApi, type Course, type Lesson } from '@/lib/content-api'
-import { format } from 'date-fns'
+import { adminContentApi, type Lesson } from '@/lib/content-api'
 
 export function LessonsViewPage() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate() // TODO: implement navigation if needed
   const search = useSearch({ from: '/_authenticated/content/lessons' })
   const [selectedCourseId, setSelectedCourseId] = useState<string>('')
 

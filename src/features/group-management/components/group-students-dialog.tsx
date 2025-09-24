@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Users, UserPlus, X, Trash2 } from 'lucide-react'
+import { Users, UserPlus } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -53,16 +53,16 @@ export function GroupStudentsDialog({ open, onOpenChange, group }: GroupStudents
     },
   })
 
-  const removeStudentMutation = useMutation({
-    mutationFn: (studentId: number) => groupsApi.removeStudent(group.id, studentId),
-    onSuccess: () => {
-      toast.success('Student removed from group successfully')
-      queryClient.invalidateQueries({ queryKey: ['groups'] })
-    },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.detail || 'Failed to remove student from group')
-    },
-  })
+  // const removeStudentMutation = useMutation({
+  //   mutationFn: (studentId: number) => groupsApi.removeStudent(group.id, studentId),
+  //   onSuccess: () => {
+  //     toast.success('Student removed from group successfully')
+  //     queryClient.invalidateQueries({ queryKey: ['groups'] })
+  //   },
+  //   onError: (error: any) => {
+  //     toast.error(error.response?.data?.detail || 'Failed to remove student from group')
+  //   },
+  // })
 
   const handleAddStudent = () => {
     if (selectedStudentId) {
@@ -70,9 +70,9 @@ export function GroupStudentsDialog({ open, onOpenChange, group }: GroupStudents
     }
   }
 
-  const handleRemoveStudent = (studentId: number) => {
-    removeStudentMutation.mutate(studentId)
-  }
+  // const handleRemoveStudent = (studentId: number) => {
+  //   removeStudentMutation.mutate(studentId)
+  // }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

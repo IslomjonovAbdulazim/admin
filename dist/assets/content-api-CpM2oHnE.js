@@ -1,0 +1,1 @@
+import{a as e}from"./Combination-e_ExlZZi.js";const o={getCourses:async()=>(await e.get("/api/v1/content/courses")).data,getCourseLessons:async s=>(await e.get(`/api/v1/content/courses/${s}/lessons`)).data,getLessonWords:async s=>(await e.get(`/api/v1/content/lessons/${s}/words`)).data};export{o as a};

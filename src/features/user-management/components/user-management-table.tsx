@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MoreHorizontal, Trash2, Edit, Phone, Users, Shield, User, GraduationCap, Coins } from 'lucide-react'
+import { MoreHorizontal, Trash2, Edit, Phone, Users, Shield, User as UserIcon, GraduationCap, Coins } from 'lucide-react'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -167,9 +167,9 @@ function UserRow({ user, onEdit, onDelete }: {
       case 'teacher':
         return <GraduationCap className='h-3 w-3' />
       case 'student':
-        return <User className='h-3 w-3' />
+        return <UserIcon className='h-3 w-3' />
       default:
-        return <User className='h-3 w-3' />
+        return <UserIcon className='h-3 w-3' />
     }
   }
 
@@ -193,7 +193,7 @@ function UserRow({ user, onEdit, onDelete }: {
         <div className='flex items-center gap-3'>
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/20'>
             <span className='text-sm font-medium text-primary'>
-              {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+              {user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase()}
             </span>
           </div>
           <div className='min-w-0 flex-1'>

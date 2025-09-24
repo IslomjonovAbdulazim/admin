@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { BookOpen, GraduationCap, ChevronRight } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { useNavigate } from '@tanstack/react-router'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -12,7 +11,6 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { adminContentApi, type Course } from '@/lib/content-api'
-import { format } from 'date-fns'
 
 export function CoursesViewPage() {
   const { data: courses = [], isLoading } = useQuery({
